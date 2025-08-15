@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Loja Online com produtos incríveis!">
+    <meta name="keywords" content="loja, produtos, compras, descontos">
+    <meta name="author" content="Loja Online">
+    <link rel="stylesheet" href="homestyle.css">
+    <title>Loja Online</title>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <img src="img/logocortada.WebP" alt="Logo da Loja" class="logo">
+            <nav class="nav-links">
+                <ul class="menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Produtos</a></li>
+                    <li><a href="#">Sobre</a></li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Bem-vindo à Nossa Loja!</h1>
+        <p>Descubra os melhores produtos com descontos incríveis.</p>
+        <a href="#produtos" class="btn">Ver Produtos</a>
+    </section>
+
+    <section class="filtros">
+        <div class="filtros-superior">
+            <div class="barra-pesquisa" id="barraPesquisa">
+                <input type="text" placeholder="Pesquisar produtos..." aria-label="Pesquisar produtos">
+                <span class="icone-lupa">🔍</span>
+            </div>
+            <div class="botoes-filtros">
+                <button class="subnav-btn filtro-btn active" data-categoria="todos">Todos</button>
+                <button class="subnav-btn filtro-btn" data-tag="promocao">Promoções</button>
+                <button class="subnav-btn filtro-btn" data-tag="lancamento">Lançamentos</button>
+                <button class="subnav-btn filtro-btn" data-tag="mais-vendido">Mais Vendidos</button>
+            </div>
+            <div class="dropdown">
+                <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Categorias</button>
+                <div class="dropdown-menu">
+                    <button class="dropdown-item" data-categoria="todos">Ver Todas</button>
+                    <button class="dropdown-item" data-categoria="Maquiagem">Maquiagem</button>
+                    <button class="dropdown-item" data-categoria="Cuidados">Cuidados</button>
+                    <button class="dropdown-item" data-categoria="Acessórios">Acessórios</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="destaques">
+        <h2>Destaques</h2>
+        <hr class="linha-destaque">
+        <div class="image-container">
+            <button id="setaEsquerda" class="seta-btn" aria-label="Produto anterior">
+                <img src="img/seta-esquerda.WebP" alt="Seta Esquerda">
+            </button>
+            <div id="destaquesContainer" class="cards"></div>
+            <button id="setaDireita" class="seta-btn" aria-label="Próximo produto">
+                <img src="img/seta-direita.WebP" alt="Seta Direita">
+            </button>
+        </div>
+    </section>
+
+    <section id="mais-vendidos">
+        <h2>Mais Vendidos</h2>
+
+        <div id="maisVendidosContainer"></div>
+    </section>
+    <hr class="divisor">
+
+    <section id="outros-produtos">
+        <h2>Todos os Produtos</h2>
+
+        <div id="outrosProdutosContainer"></div>
+    </section>
+
+    <button id="carrinhoFlutuante" aria-label="Abrir carrinho">
+        <img src="img/sacola.WebP" alt="Ícone de Carrinho">
+        <span id="contador-carrinho">0</span>
+    </button>
+
+    <div id="modalCarrinho" class="modal">
+        <div class="conteudo-modal">
+            <span class="fechar" aria-label="Fechar carrinho">&times;</span>
+            <h2>Carrinho de Compras</h2>
+            <ul id="listaCarrinho"></ul>
+            <p id="total-carrinho">Total: R$ 0,00</p>
+            <button id="btnFinalizarCompra">Finalizar Compra</button>
+            <button id="limpar-carrinho">Limpar Carrinho</button>
+        </div>
+    </div>
+
+    <div id="modalCard" class="modal">
+        <div class="modal-conteudo">
+            <button id="fecharCard" aria-label="Fechar modal">&times;</button>
+            <img id="modalCardImg" src="" alt="">
+            <h2 id="modalCardNome">Nome do Produto</h2>
+            <p id="modalCardDesconto"></p>
+            <p id="modalCardPreco">R$ 0,00</p>
+            <p id="modalCardPrecoOriginal">R$ 0,00</p>
+            <p id="modalCardDescricao">Descrição detalhada do produto.</p>
+            <div class="quantidade-container">
+                <button class="quantidade-btn" aria-label="Diminuir quantidade">-</button>
+                <input type="number" value="1" min="1" aria-label="Quantidade">
+                <button class="quantidade-btn" aria-label="Aumentar quantidade">+</button>
+            </div>
+            <textarea placeholder="Observações" aria-label="Observações do pedido"></textarea>
+            <div class="modal-botoes">
+                <button id="btnAdicionar">Adicionar ao Carrinho</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Loja Online. Todos os direitos reservados.</p>
+    </footer>
+
+    <script type="module" src="JS/INIT.js"></script>
+</body>
+
+</html>
