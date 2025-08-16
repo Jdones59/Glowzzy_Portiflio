@@ -1,4 +1,6 @@
-/**
+import { formatarPreco } from './utils.js';
+
+/*
  * Lista estática de produtos da loja.
  */
 const listaProdutos = [
@@ -120,7 +122,7 @@ const listaProdutos = [
         imagem: 'img/shampoo.webp',
         imagens: ['img/shampoo.webp'],
         preco: 99.9,
-        precoFormatado: 'R$ 99,90',
+        precoFormatado: 'R$ 29,90',
         precoOriginal: null,
         precoOriginalFormatado: null,
         descontoAplicado: null,
@@ -144,6 +146,20 @@ const listaProdutos = [
     }
 ];
 
+
+/**
+ * Calcula o preço com desconto.
+ * @param {number} original - Preço original.
+ * @param {number|null} desconto - Percentual de desconto.
+ * @returns {number} Preço calculado.
+ */
+function calcularPrecoComDesconto(original, desconto) {
+    if (desconto === null || desconto === undefined) {
+        return original;
+    }
+    return Math.round(original * (1 - desconto / 100) * 10) / 10; // Arredonda para 1 decimal
+}
+
 /**
  * Valida um produto para garantir que possui todas as propriedades necessárias.
  * @param {object} produto - O objeto do produto a ser validado.
@@ -152,16 +168,33 @@ const listaProdutos = [
 function validarProduto(produto) {
     const isValid = produto &&
         typeof produto.id === 'number' &&
-        produto.nome &&
-        typeof produto.preco === 'number' &&
-        produto.imagem &&
+        typeof produto.nome === 'string' &&
+        typeof produto.imagem === 'string' &&
         Array.isArray(produto.imagens) &&
-        typeof produto.precoFormatado === 'string' &&
+        produto.imagens.every(img => typeof img === 'string' && img.endsWith('.webp')) &&
+        (produto.precoOriginal === null || typeof produto.precoOriginal === 'number') &&
+        (produto.precoOriginalFormatado === null || typeof produto.precoOriginalFormatado === 'string') &&
+        (produto.descontoAplicado === null || typeof produto.descontoAplicado === 'number') &&
         typeof produto.categoria === 'string' &&
         typeof produto.descricao === 'string' &&
         Array.isArray(produto.tags);
     if (!isValid) {
-        console.warn('Produto inválido:', produto);
+        console.warn('Produto inválido:', {
+            id: produto?.id,
+            nome: produto?.nome,
+            erros: {
+                id: typeof produto?.id !== 'number' ? 'ID não é número' : null,
+                nome: typeof produto?.nome !== 'string' ? 'Nome inválido' : null,
+                imagem: typeof produto?.imagem !== 'string' ? 'Imagem inválida' : null,
+                imagens: !Array.isArray(produto?.imagens) || !produto?.imagens.every(img => typeof img === 'string' && img.endsWith('.webp')) ? 'Imagens inválidas' : null,
+                precoOriginal: produto?.precoOriginal !== null && typeof produto?.precoOriginal !== 'number' ? 'Preço original inválido' : null,
+                precoOriginalFormatado: produto?.precoOriginalFormatado !== null && typeof produto?.precoOriginalFormatado !== 'string' ? 'Preço original formatado inválido' : null,
+                descontoAplicado: produto?.descontoAplicado !== null && typeof produto?.descontoAplicado !== 'number' ? 'Desconto inválido' : null,
+                categoria: typeof produto?.categoria !== 'string' ? 'Categoria inválida' : null,
+                descricao: typeof produto?.descricao !== 'string' ? 'Descrição inválida' : null,
+                tags: !Array.isArray(produto?.tags) ? 'Tags inválidas' : null
+            }
+        });
     }
     return isValid;
 }
@@ -171,7 +204,19 @@ function validarProduto(produto) {
  * @returns {Array} Lista de produtos.
  */
 export function obterProdutos() {
-    const produtosValidos = listaProdutos.filter(validarProduto);
+    const produtosValidos = listaProdutos.filter(validarProduto).map(produto => {
+        let precoCalculado;
+        if (produto.precoOriginal !== null) {
+            precoCalculado = calcularPrecoComDesconto(produto.precoOriginal, produto.descontoAplicado);
+        } else {
+            precoCalculado = produto.id === 9 ? 29.9 : (produto.id === 10 ? 75.0 : 0);
+        }
+        return {
+            ...produto,
+            preco: precoCalculado,
+            precoFormatado: formatarPreco(precoCalculado)
+        };
+    });
     if (produtosValidos.length < listaProdutos.length) {
         console.warn(`${listaProdutos.length - produtosValidos.length} produto(s) inválido(s) foram ignorados.`);
     }
